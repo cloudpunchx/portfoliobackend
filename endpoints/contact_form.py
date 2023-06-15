@@ -3,7 +3,7 @@ from flask import make_response, jsonify, request
 from helpers.dbhelpers import run_statement
 from helpers.helpers import check_data
 
-@app.post('/api/contact')
+@app.post('/api/contact-form')
 def contact_form():
     """
     Expects: name, email, message.
@@ -23,5 +23,7 @@ def contact_form():
             return make_response(jsonify("Your message has been received and will be responded to shortly, thank you!"), 200)
         elif result[0][0] == 0:
             return make_response(jsonify("Something went wrong, please try again."), 500)
+    elif "contact_messages_CHECK_email_format" in result:
+        return make_response(jsonify("Please check that your email is formatted correctly, eg. 'test@testing.com'"), 400)
     else:
-        return make_response(jsonify(result), 500)
+        return make_response(jsonify("Something went wrong, please try again."), 500)
